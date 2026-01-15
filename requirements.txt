@@ -1,11 +1,6 @@
-Listen to a customer discovery call, identify what they need, build a working prototype,
-and demo it in a live interview.
-The Scenario
-Hoth Industries manufactures air handling and cooling products for data centers. You just
-completed a discovery call with their team. They urgently need help and are asking for
-many things.
-Your job:
-1. “Listen” to what they said (read transcript below)
-2. Decide what they need
-3. Build a working prototype that solves a real problem
-4. Demo it like you're presenting back to them for feedback
+pandas
+numpy
+scikit-learn
+matplotlib
+rapidfuzz
+textblob
