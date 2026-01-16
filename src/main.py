@@ -11,7 +11,6 @@ orders, quality, rfqs = load_data()
 # Normalize supplier names
 mapping = normalize(orders["supplier_name"].unique())
 orders["supplier_clean"] = orders["supplier_name"].map(mapping)
-quality["supplier_clean"] = quality["supplier_name"].map(mapping)
 rfqs["supplier_clean"] = rfqs["supplier_name"].map(mapping)
 
 supplier_features = engineer_features(orders, quality, rfqs)
