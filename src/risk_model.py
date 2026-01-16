@@ -12,15 +12,17 @@ def train_risk_model(df):
 
     X = df[feature_cols].fillna(0)
 
+    # 🔹 Softer + more realistic risk definition
     y = (
-        (df["on_time_rate"] < 0.9)
-        | (df["avg_defect_rate"] > 0.01)
-        | (df["rework_rate"] > 0.02)
+        (df["on_time_rate"] < 0.92) |
+        (df["avg_days_late"] > 2) |
+        (df["avg_defect_rate"] > 0.015) |
+        (df["rework_rate"] > 0.03)
     ).astype(int)
 
     model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=5,
+        n_estimators=300,
+        max_depth=6,
         random_state=42,
     )
 
