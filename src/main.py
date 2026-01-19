@@ -5,18 +5,11 @@ from notes_nlp import analyze_notes
 from risk_model import train_risk_model
 from recommender import recommend_suppliers
 from dashboard import supplier_dashboard
-import pandas as pd
 
 orders, quality, rfqs = load_data()
 
 # Normalize supplier names
-all_names = pd.concat([
-    orders["supplier_name"],
-    rfqs["supplier_name"]
-]).dropna().unique()
-
-mapping = normalize(all_names)
-
+mapping = normalize(orders["supplier_name"].unique())
 orders["supplier_clean"] = orders["supplier_name"].map(mapping)
 rfqs["supplier_clean"] = rfqs["supplier_name"].map(mapping)
 
