@@ -28,11 +28,11 @@ notes_sentiment = analyze_notes(
     supplier_features["supplier_clean"].tolist()
 )
 
-#supplier_features["notes_sentiment"] = (
-#    supplier_features["supplier_clean"]
-#    .map(notes_sentiment)
-#    .fillna(0)
-#)
+supplier_features["notes_sentiment"] = (
+    supplier_features["supplier_clean"]
+    .map(notes_sentiment)
+    .fillna(0)
+)
 
 supplier_features, model = train_risk_model(supplier_features)
 
