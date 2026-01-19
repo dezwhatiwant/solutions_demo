@@ -23,6 +23,12 @@ notes_sentiment = analyze_notes(
 
 supplier_features, model = train_risk_model(supplier_features)
 
+# 🔹 Blend in tribal knowledge sentiment
+supplier_features["risk_score"] = (
+    supplier_features["risk_score"]
+    - supplier_features["notes_sentiment"] * 0.15
+).clip(0, 1)
+
 recommendations = recommend_suppliers(supplier_features)
 print(recommendations)
 
