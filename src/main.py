@@ -9,11 +9,15 @@ from dashboard import supplier_dashboard
 orders, quality, rfqs = load_data()
 
 # Normalize supplier names
-mapping = normalize(orders["supplier_name"].unique())
+all_names = pd.concat([
+    orders["supplier_name"],
+    rfqs["supplier_name"]
+]).dropna().unique()
+
+mapping = normalize(all_names)
+
 orders["supplier_clean"] = orders["supplier_name"].map(mapping)
 rfqs["supplier_clean"] = rfqs["supplier_name"].map(mapping)
-
-supplier_features = engineer_features(orders, quality, rfqs)
 
 # NLP signal
 notes_sentiment = analyze_notes(
