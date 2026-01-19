@@ -5,6 +5,7 @@ from notes_nlp import analyze_notes
 from risk_model import train_risk_model
 from recommender import recommend_suppliers
 from dashboard import supplier_dashboard
+import pandas as pd
 
 orders, quality, rfqs = load_data()
 
