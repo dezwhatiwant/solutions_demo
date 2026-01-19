@@ -28,7 +28,18 @@ notes_sentiment = analyze_notes(
     supplier_features["supplier_clean"].tolist()
 )
 
+supplier_features["notes_sentiment"] = (
+    supplier_features["supplier_clean"]
+    .map(notes_sentiment)
+    .fillna(0)
+    )
+
 supplier_features, model = train_risk_model(supplier_features)
+
+supplier_features["risk_score"] = (
+    supplier_features["risk_score"]
+    - supplier_features["notes_sentiment"] * 0.15
+).clip(0, 1)
 
 recommendations = recommend_suppliers(supplier_features)
 print("\nTop Supplier Recommendations:\n")
