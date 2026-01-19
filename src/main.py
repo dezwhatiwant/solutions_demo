@@ -6,6 +6,7 @@ from risk_model import train_risk_model
 from recommender import recommend_suppliers
 from dashboard import supplier_dashboard
 import pandas as pd
+from cli import analyze_supplier
 
 orders, quality, rfqs = load_data()
 
@@ -46,3 +47,9 @@ print("\nTop Supplier Recommendations:\n")
 print(recommendations)
 
 supplier_dashboard(supplier_features)
+
+while True:
+    name = input("\nEnter supplier name for risk analysis (or 'quit'): ")
+    if name.lower() == "quit":
+        break
+    analyze_supplier(name, supplier_features)
