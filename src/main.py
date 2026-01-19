@@ -20,6 +20,8 @@ mapping = normalize(all_names)
 orders["supplier_clean"] = orders["supplier_name"].map(mapping)
 rfqs["supplier_clean"] = rfqs["supplier_name"].map(mapping)
 
+supplier_features = engineer_features(orders, quality, rfqs)
+
 # NLP signal
 notes_sentiment = analyze_notes(
     "data/raw/supplier_notes.txt",
