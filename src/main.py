@@ -8,28 +8,24 @@ from dashboard import supplier_dashboard
 
 orders, quality, rfqs = load_data()
 
-# Normalize supplier names
+# Normalize supplier names from orders + RFQs only
 mapping = normalize(orders["supplier_name"].unique())
+
 orders["supplier_clean"] = orders["supplier_name"].map(mapping)
 rfqs["supplier_clean"] = rfqs["supplier_name"].map(mapping)
 
 supplier_features = engineer_features(orders, quality, rfqs)
 
 # NLP signal
-notes_sentiment = analyze_notes(
-    "data/raw/supplier_notes.txt",
-    supplier_features["supplier_clean"].tolist()
+notes_sentiment = analyze_notes("data/raw/supplier_notes.txt")
+supplier_features["notes_sentiment"] = (
+    supplier_features["supplier_clean"].map(notes_sentiment).fillna(0)
 )
 
 supplier_features, model = train_risk_model(supplier_features)
 
-# 🔹 Blend in tribal knowledge sentiment
-supplier_features["risk_score"] = (
-    supplier_features["risk_score"]
-    - supplier_features["notes_sentiment"] * 0.15
-).clip(0, 1)
-
 recommendations = recommend_suppliers(supplier_features)
+print("\nTop Supplier Recommendations:\n")
 print(recommendations)
 
 supplier_dashboard(supplier_features)
