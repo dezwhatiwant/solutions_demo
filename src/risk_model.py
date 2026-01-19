@@ -12,23 +12,24 @@ def train_risk_model(df):
 
     X = df[feature_cols].fillna(0)
 
-    # 🔹 Softer + more realistic risk definition
+    # 🔹 Peer-relative risk labeling
+    on_time_thresh = df["on_time_rate"].quantile(0.25)
+    defect_thresh = df["avg_defect_rate"].quantile(0.75)
+    late_thresh = df["avg_days_late"].quantile(0.75)
+
     y = (
-        (df["on_time_rate"] < 0.92) |
-        (df["avg_days_late"] > 2) |
-        (df["avg_defect_rate"] > 0.015) |
-        (df["rework_rate"] > 0.03)
+        (df["on_time_rate"] <= on_time_thresh) |
+        (df["avg_defect_rate"] >= defect_thresh) |
+        (df["avg_days_late"] >= late_thresh)
     ).astype(int)
 
     model = RandomForestClassifier(
         n_estimators=300,
-        max_depth=6,
+        max_depth=5,
         random_state=42,
     )
-
     model.fit(X, y)
 
-    # 🔹 Handle single-class case
     if len(model.classes_) == 1:
         df["risk_score"] = 0.0 if model.classes_[0] == 0 else 1.0
     else:
