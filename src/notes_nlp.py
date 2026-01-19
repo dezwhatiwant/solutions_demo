@@ -1,8 +1,8 @@
 from textblob import TextBlob
-from rapidfuzz import process, fuzz
+import re
 
-def analyze_notes(filepath, supplier_list):
-    supplier_sentiment = {s: [] for s in supplier_list}
+def analyze_notes(filepath):
+    supplier_sentiment = {}
 
     with open(filepath, "r") as f:
         for line in f:
@@ -12,15 +12,11 @@ def analyze_notes(filepath, supplier_list):
 
             sentiment = TextBlob(text).sentiment.polarity
 
-            # Match note to closest supplier name
-            match, score, _ = process.extractOne(
-                text, supplier_list, scorer=fuzz.token_sort_ratio
-            )
+            supplier = re.split(r"\s", text)[0]
 
-            if score > 70:
-                supplier_sentiment[match].append(sentiment)
+            supplier_sentiment.setdefault(supplier, []).append(sentiment)
 
     return {
-        s: (sum(vals) / len(vals)) if vals else 0.0
+        s: sum(vals) / len(vals)
         for s, vals in supplier_sentiment.items()
     }
