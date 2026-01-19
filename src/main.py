@@ -36,10 +36,10 @@ supplier_features["notes_sentiment"] = (
 
 supplier_features, model = train_risk_model(supplier_features)
 
-#supplier_features["risk_score"] = (
-#    supplier_features["risk_score"]
-#    - supplier_features["notes_sentiment"] * 0.15
-#).clip(0, 1)
+supplier_features["risk_score"] = (
+    supplier_features["risk_score"]
+    - supplier_features["notes_sentiment"] * 0.15
+).clip(0, 1)
 
 recommendations = recommend_suppliers(supplier_features)
 print("\nTop Supplier Recommendations:\n")
