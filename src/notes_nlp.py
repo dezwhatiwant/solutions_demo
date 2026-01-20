@@ -12,33 +12,29 @@ def clean_name(name):
 
 def analyze_notes(notes_file):
     with open(notes_file, "r") as f:
-        text = f.read()
-
-    # Split by big separator lines
-    blocks = re.split(r"={5,}", text)
+        lines = f.readlines()
 
     records = []
+    current_supplier = None
 
-    for block in blocks:
-        lines = block.strip().split("\n")
-        if not lines:
+    for line in lines:
+        line = line.strip()
+
+        # Detect supplier section headers
+        header_match = re.match(r"^([A-Z\s/&]+)\s+-", line)
+        if header_match:
+            current_supplier = clean_name(header_match.group(1))
             continue
 
-        # First non-empty line is the supplier header
-        header = lines[0].strip()
-        if " - " not in header:
+        # Skip metadata lines
+        if not current_supplier or not line or line.startswith(("Email", "Meeting", "Graham", "Cody", "Sarah", "Mike")):
             continue
 
-        supplier_raw = header.split(" - ")[0]
-        supplier_clean = clean_name(supplier_raw)
+        # Sentiment on actual content lines
+        blob = TextBlob(line)
+        polarity = blob.sentiment.polarity
 
-        # Everything after header is sentiment text
-        body = " ".join(lines[1:])
-        body = re.sub(r"\s+", " ", body)
-
-        if body.strip():
-            sentiment = TextBlob(body).sentiment.polarity
-            records.append((supplier_clean, sentiment))
+        records.append((current_supplier, polarity))
 
     df = pd.DataFrame(records, columns=["supplier_clean", "sentiment"])
 
