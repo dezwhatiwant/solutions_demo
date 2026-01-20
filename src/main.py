@@ -52,8 +52,8 @@ while True:
     analyze_supplier(name, supplier_features)
     
     elif choice == "2":
-    part = input("Enter part description (e.g. 'Heat Exchanger'): ")
-    top = recommend_suppliers_for_part(part, orders, supplier_features)
+        part = input("Enter part description (e.g. 'Heat Exchanger'): ")
+        top = recommend_suppliers_for_part(part, orders, supplier_features)
 
         if top is not None:
             print(f"\n🔎 Top Suppliers for '{part.title()}'")
