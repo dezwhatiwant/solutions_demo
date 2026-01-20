@@ -46,11 +46,17 @@ print(recommendations)
 supplier_dashboard(supplier_features)
 
 while True:
-    name = input("\nEnter supplier name for risk analysis (or 'quit'): ")
-    if name.lower() == "quit":
-        break
-    analyze_supplier(name, supplier_features)
-    
+    print("\nOptions:")
+    print("1 - Analyze supplier risk")
+    print("2 - Recommend top suppliers for a part")
+    print("3 - Quit")
+
+    choice = input("Select option: ").strip()
+
+    if choice == "1":
+        name = input("Enter supplier name: ")
+        analyze_supplier(name, supplier_features)
+
     elif choice == "2":
         part = input("Enter part description (e.g. 'Heat Exchanger'): ")
         top = recommend_suppliers_for_part(part, orders, supplier_features)
@@ -59,4 +65,11 @@ while True:
             print(f"\n🔎 Top Suppliers for '{part.title()}'")
             print("-" * 50)
             print(top[["supplier_clean", "score", "risk_score", "on_time_rate", "avg_unit_price"]])
+
+    elif choice == "3":
+        print("Exiting...")
+        break
+
+    else:
+        print("Invalid option. Try again.")
 
