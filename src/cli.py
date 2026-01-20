@@ -21,7 +21,7 @@ def analyze_supplier(supplier_name, df):
 
     if r.risk_score > 0.75:
         print("🔴 HIGH RISK – Avoid for critical orders")
-    elif r.risk_score > 0.4:
+    elif r.risk_score > 0.34:
         print("🟠 MODERATE RISK – Use with caution")
     else:
         print("🟢 LOW RISK – Preferred supplier")
