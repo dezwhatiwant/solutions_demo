@@ -40,7 +40,7 @@ supplier_features["risk_score"] = (
 ).clip(0, 1)
 
 recommendations = recommend_suppliers(supplier_features)
-print("\nTop Supplier Recommendations:\n")
+print("\nSupplier Breakdown:\n")
 print(recommendations)
 
 supplier_dashboard(supplier_features)
