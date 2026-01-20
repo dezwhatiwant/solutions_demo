@@ -4,6 +4,7 @@ from features import engineer_features
 from notes_nlp import analyze_notes
 from risk_model import train_risk_model
 from recommender import recommend_suppliers
+from recommender import recommend_suppliers_for_part
 from dashboard import supplier_dashboard
 import pandas as pd
 from cli import analyze_supplier
@@ -49,3 +50,13 @@ while True:
     if name.lower() == "quit":
         break
     analyze_supplier(name, supplier_features)
+    
+    elif choice == "2":
+    part = input("Enter part description (e.g. 'Heat Exchanger'): ")
+    top = recommend_suppliers_for_part(part, orders, supplier_features)
+
+        if top is not None:
+            print(f"\n🔎 Top Suppliers for '{part.title()}'")
+            print("-" * 50)
+            print(top[["supplier_clean", "score", "risk_score", "on_time_rate", "avg_unit_price"]])
+
