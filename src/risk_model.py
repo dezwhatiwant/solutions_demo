@@ -36,3 +36,23 @@ def train_risk_model(df):
         df["risk_score"] = model.predict_proba(X)[:, 1]
 
     return df, model
+
+def compute_absolute_risk(df):
+    df = df.copy()
+
+    # Convert metrics into 0–1 "badness" scores
+    df["late_risk"] = (df["avg_days_late"] / 10).clip(0, 1)
+    df["ontime_risk"] = (1 - df["on_time_rate"]).clip(0, 1)
+    df["defect_risk"] = (df["avg_defect_rate"] / 0.05).clip(0, 1)
+    df["rework_risk"] = (df["rework_rate"] / 0.5).clip(0, 1)
+
+    # Weighted absolute risk
+    df["absolute_risk"] = (
+        df["ontime_risk"] * 0.35
+        + df["late_risk"] * 0.25
+        + df["defect_risk"] * 0.20
+        + df["rework_risk"] * 0.20
+    )
+
+    return df
+
