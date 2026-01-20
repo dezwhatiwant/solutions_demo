@@ -1,3 +1,4 @@
+import pandas as pd
 from ingest import load_data
 from normalize_suppliers import normalize
 from features import engineer_features
@@ -6,8 +7,9 @@ from risk_model import train_risk_model
 from recommender import recommend_suppliers
 from recommender import recommend_suppliers_for_part
 from dashboard import supplier_dashboard
-import pandas as pd
 from cli import analyze_supplier
+from risk_model import compute_absolute_risk
+
 
 orders, quality, rfqs = load_data()
 
@@ -33,11 +35,14 @@ supplier_features["notes_sentiment"] = (
 )
 
 supplier_features, model = train_risk_model(supplier_features)
+supplier_features = compute_absolute_risk(supplier_features)
 
+# Blend NLP sentiment into absolute risk score
 supplier_features["risk_score"] = (
-    supplier_features["risk_score"]
+    supplier_features["absolute_risk"]
     - supplier_features["notes_sentiment"] * 0.30
 ).clip(0, 1)
+
 
 print(supplier_features[["supplier_clean", "notes_sentiment", "risk_score"]])
 
