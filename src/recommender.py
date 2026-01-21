@@ -8,7 +8,7 @@ def recommend_suppliers(df, top_n=3):
         + (1 / df["avg_unit_price"]) * 0.20
     )
 
-    return df.sort_values("score", ascending=False).head(10)
+    return df.head(10)
 
 def recommend_suppliers_for_part(part_description, orders_df, supplier_features, top_n=3):
     part_description = part_description.lower()
