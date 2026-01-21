@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 
 def supplier_dashboard(df):
-    df.sort_values("risk_score").plot(
-        x="supplier_clean", y="risk_score", kind="bar"
+    df.sort_values("score").plot(
+        x="supplier_clean", y="score", kind="bar"
     )
-    plt.title("Supplier Risk Scores")
+    plt.title("Supplier Risk Assesment")
     plt.xlabel("Suppliers")
-    plt.ylim(0.3, 0.9)
+    plt.ylim(0.35, 0.75)
     plt.tight_layout()
     plt.show()
